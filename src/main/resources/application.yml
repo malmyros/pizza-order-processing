@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: demo
+  temporal:
+    namespace: default
+    connection:
+      target: 127.0.0.1:7233
+    workers:
+      - name: order-pizza-worker
+        task-queue: place_order
+    workersAutoDiscovery:
+      packages:
+        - com.example.demo.workflows
+        - com.example.demo.activities
