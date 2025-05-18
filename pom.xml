@@ -63,11 +63,18 @@
 			<scope>compile</scope>
 		</dependency>
 
+		<!-- Testing -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>io.temporal</groupId>
+			<artifactId>temporal-testing</artifactId>
+			<version>1.29.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
