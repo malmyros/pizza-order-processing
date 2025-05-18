@@ -4,6 +4,16 @@ An example of a Spring boot service for placing pizza orders with Temporal.
 The service demonstrates how to leverage Activities for splitting steps of the
 order processing workflow and managing them resiliently.
 
+## Install Temporal locally
+
+Before we can start running the demo, we would need to install Temporal.
+To do this if you have homebrew installed in your computer you can run the
+following command:
+
+```
+brew install temporal
+```
+
 ## Running the demo
 
 We first need to start our temporal server.
