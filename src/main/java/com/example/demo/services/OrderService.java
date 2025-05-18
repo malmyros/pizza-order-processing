@@ -9,8 +9,6 @@ import io.temporal.client.WorkflowOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.ExecutionException;
-
 @Service
 public class OrderService {
 
@@ -18,7 +16,7 @@ public class OrderService {
     private WorkflowClient workflowClient;
 
     public OrderResponse orderPizza(
-            OrderRequest orderRequest) throws ExecutionException, InterruptedException {
+            OrderRequest orderRequest) {
 
         String orderWorkflowId = "process-order-number-" + orderRequest.orderNumber();
         WorkflowOptions workflowOptions = WorkflowOptions.newBuilder()
