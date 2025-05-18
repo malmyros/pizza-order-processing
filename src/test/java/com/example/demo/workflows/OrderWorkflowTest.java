@@ -1,16 +1,12 @@
 package com.example.demo.workflows;
 
 import com.example.demo.activities.OrderActivitiesImpl;
-import com.example.demo.common.Workflows;
 import com.example.demo.dto.orders.OrderRequest;
 import com.example.demo.dto.orders.OrderResponse;
 import com.example.demo.fixtures.OrderRequestFixtures;
-import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowOptions;
-import io.temporal.testing.TestWorkflowEnvironment;
-import io.temporal.worker.Worker;
-import org.junit.After;
-import org.junit.Before;
+import io.temporal.testing.TestWorkflowRule;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -20,33 +16,25 @@ import static org.junit.Assert.assertNotNull;
 
 public class OrderWorkflowTest {
 
-    private TestWorkflowEnvironment testEnv;
-    private Worker worker;
-    private WorkflowClient client;
-
-    @Before
-    public void setup() {
-
-        testEnv = TestWorkflowEnvironment.newInstance();
-        worker = testEnv.newWorker(Workflows.ORDER_TASK_QUEUE);
-        worker.registerWorkflowImplementationTypes(OrderWorkflowImpl.class);
-        client = testEnv.getWorkflowClient();
-    }
-
-    @After
-    public void tearDown() {
-        testEnv.close();
-    }
+    @Rule
+    public TestWorkflowRule testWorkflowRule =
+            TestWorkflowRule.newBuilder()
+                    .setWorkflowTypes(OrderWorkflowImpl.class)
+                    .setActivityImplementations(new OrderActivitiesImpl())
+                    .build();
 
     @Test
-    public void testIntegrationGetGreeting() {
+    public void shouldReturnTheOrderResponse() {
 
-        worker.registerActivitiesImplementations(new OrderActivitiesImpl());
-        testEnv.start();
+        WorkflowOptions workflowOptions = WorkflowOptions.newBuilder()
+                .setTaskQueue(testWorkflowRule.getTaskQueue())
+                .build();
 
-        OrderWorkflow orderWorkflow = client
-                .newWorkflowStub(OrderWorkflow.class, WorkflowOptions.newBuilder()
-                        .setTaskQueue(Workflows.ORDER_TASK_QUEUE).build());
+        OrderWorkflow orderWorkflow = testWorkflowRule
+                .getWorkflowClient()
+                .newWorkflowStub(
+                        OrderWorkflow.class,
+                        workflowOptions);
 
         OrderRequest orderRequest = OrderRequestFixtures.getOrderRequest();
         OrderResponse orderResponse = orderWorkflow.orderPizza(orderRequest);
@@ -55,5 +43,7 @@ public class OrderWorkflowTest {
         assertEquals(orderRequest.orderNumber(), orderResponse.orderNumber());
         assertEquals(new BigDecimal("25.00"), orderResponse.totalAmount());
         assertNotNull(orderResponse.orderDate());
+
+        testWorkflowRule.getTestEnvironment().shutdown();
     }
 }
