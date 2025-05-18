@@ -8,7 +8,6 @@ import com.example.demo.dto.orders.OrderResponse;
 import com.example.demo.exceptions.OutOfServiceAreaException;
 import com.example.demo.factory.OrderBillFactory;
 import com.example.demo.factory.OrderResponseFactory;
-import com.example.demo.utils.OrderUtils;
 import io.temporal.activity.ActivityOptions;
 import io.temporal.failure.ApplicationFailure;
 import io.temporal.spring.boot.WorkflowImpl;
@@ -36,10 +35,10 @@ public class OrderWorkflowImpl implements OrderWorkflow {
         String orderNumber = orderRequest.orderNumber();
 
         log.info("Calculating the cost for order {}", orderNumber);
-        BigDecimal totalOrderAmount = OrderUtils.getTotalOrderAmount(orderRequest.orderItems());
+        BigDecimal totalOrderAmount = orderActivities.calculateOrderTotal(orderRequest.orderItems());
 
         log.info("Estimating order distance for order {}", orderNumber);
-        int distance = orderActivities.getDistance(orderRequest.orderAddress());
+        int distance = orderActivities.estimateDeliveryDistance(orderRequest.orderAddress());
 
         log.info("Verifying order distance");
         if (orderRequest.isDelivery() && distance > 25) {
