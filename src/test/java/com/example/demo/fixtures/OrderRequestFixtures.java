@@ -1,0 +1,24 @@
+package com.example.demo.fixtures;
+
+import com.example.demo.dto.orders.OrderRequest;
+
+import java.util.List;
+
+public class OrderRequestFixtures {
+
+    private OrderRequestFixtures() {
+    }
+
+    public static OrderRequest getOrderRequest() {
+        return new OrderRequest(
+                "1747568868",
+                CustomerFixtures.getCustomer(),
+                List.of(
+                        OrderItemFixtures.getLargePizza(),
+                        OrderItemFixtures.getSmallPizza()
+                ),
+                true,
+                OrderAddressFixtures.getOrderAddress()
+        );
+    }
+}
