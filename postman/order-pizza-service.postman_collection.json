@@ -1,0 +1,40 @@
+{
+	"info": {
+		"_postman_id": "294862df-e0fb-46e4-9fac-5e1ba3e60a02",
+		"name": "Order Pizza Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "129850"
+	},
+	"item": [
+		{
+			"name": "Order Pizza",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"orderNumber\": \"{{$timestamp}}\",\n    \"customer\": {\n        \"customrId\": \"12938\",\n        \"name\": \"Maria Garcia\",\n        \"email\": \"marcia1985@example.com\",\n        \"phone\": \"0789231231\"\n    },\n    \"orderItems\": [\n        {\n            \"description\": \"Large, with pepperoni\",\n            \"price\": 15.00\n        },\n        {\n            \"description\": \"Small, with mushrooms and onions\",\n            \"price\": 10.00\n        }\n    ],\n    \"isDelivery\": true,\n    \"orderAddress\": {\n        \"line1\": \"701 Mission Street\",\n        \"line2\": \"Apartment 9C\",\n        \"city\": \"San Francisco\",\n        \"state\": \"CA\",\n        \"postcode\": \"94103\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

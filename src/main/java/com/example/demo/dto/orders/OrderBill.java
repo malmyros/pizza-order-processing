@@ -6,10 +6,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 
-@Schema(description = "The pizza order response")
-public record OrderResponse(
+@Schema(description = "The order bill")
+public record OrderBill(
 
         @JsonDeserialize
         @NotBlank(message = "The order number cannot be empty")
@@ -17,13 +16,19 @@ public record OrderResponse(
         String orderNumber,
 
         @JsonDeserialize
-        @NotNull(message = "The total amount cannot be null")
-        @Schema(description = "The total amount of the order", example = "25.22")
-        BigDecimal totalAmount,
+        @NotBlank(message = "The customer id cannot be null")
+        @Schema(description = "The customer's unique id", example = "1747565338")
+        String customerId,
 
         @JsonDeserialize
-        @NotNull(message = "The order date cannot be null")
-        @Schema(description = "The date the order was placed", example = "2025-05-18T10:48:58.017998Z")
-        Instant orderDate
+        @NotNull(message = "The amount cannot be null")
+        @Schema(description = "The total amount of the order", example = "25.22")
+        BigDecimal amount,
+
+        @JsonDeserialize
+        @NotBlank(message = "The description cannot be empty")
+        @Schema(description = "The order's bill description", example = "Send order 1747565338")
+        String description
 ) {
+
 }

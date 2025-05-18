@@ -1,8 +1,8 @@
 package com.example.demo.activities;
 
 import com.example.demo.common.Workflows;
-import com.example.demo.dto.common.OrderAddress;
-import com.example.demo.dto.common.OrderBill;
+import com.example.demo.dto.orders.OrderAddress;
+import com.example.demo.dto.orders.OrderBill;
 import io.temporal.spring.boot.ActivityImpl;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +17,6 @@ public class OrderActivitiesImpl implements OrderActivities {
 
     @Override
     public String sendBill(OrderBill orderBill) {
-        return "Send order %s".formatted(orderBill.orderNumber);
+        return "Send order %s".formatted(orderBill.orderNumber());
     }
 }

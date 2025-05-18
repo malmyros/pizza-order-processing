@@ -2,7 +2,7 @@ package com.example.demo.workflows;
 
 import com.example.demo.activities.OrderActivities;
 import com.example.demo.common.Workflows;
-import com.example.demo.dto.common.OrderBill;
+import com.example.demo.dto.orders.OrderBill;
 import com.example.demo.dto.orders.OrderRequest;
 import com.example.demo.dto.orders.OrderResponse;
 import com.example.demo.exceptions.OutOfServiceAreaException;

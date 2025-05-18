@@ -1,6 +1,6 @@
 package com.example.demo.utils;
 
-import com.example.demo.dto.common.OrderItem;
+import com.example.demo.dto.orders.OrderItem;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -15,7 +15,7 @@ public class OrderUtils {
 
         return orderItems
                 .stream()
-                .map(orderItem -> orderItem.price)
+                .map(OrderItem::price)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
