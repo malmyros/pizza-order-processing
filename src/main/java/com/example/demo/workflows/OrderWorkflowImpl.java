@@ -33,7 +33,6 @@ public class OrderWorkflowImpl implements OrderWorkflow {
     ActivityOptions options = ActivityOptions.newBuilder()
             .setStartToCloseTimeout(Duration.ofSeconds(5))
             .setRetryOptions(retryOptions)
-            .setHeartbeatTimeout(Duration.ofSeconds(3))
             .build();
 
     private final OrderActivities orderActivities = Workflow
