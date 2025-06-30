@@ -9,6 +9,7 @@ import com.example.demo.exceptions.OutOfServiceAreaException;
 import com.example.demo.factory.OrderBillFactory;
 import com.example.demo.factory.OrderResponseFactory;
 import io.temporal.activity.ActivityOptions;
+import io.temporal.common.RetryOptions;
 import io.temporal.failure.ApplicationFailure;
 import io.temporal.spring.boot.WorkflowImpl;
 import io.temporal.workflow.Workflow;
@@ -22,8 +23,17 @@ public class OrderWorkflowImpl implements OrderWorkflow {
 
     public static final Logger log = Workflow.getLogger(OrderWorkflowImpl.class);
 
+    RetryOptions retryOptions = RetryOptions.newBuilder()
+            .setInitialInterval(Duration.ofSeconds(15))
+            .setBackoffCoefficient(2.0)
+            .setMaximumInterval(Duration.ofSeconds(60))
+            .setMaximumAttempts(10)
+            .build();
+
     ActivityOptions options = ActivityOptions.newBuilder()
-            .setStartToCloseTimeout(Duration.ofSeconds(1))
+            .setStartToCloseTimeout(Duration.ofSeconds(5))
+            .setRetryOptions(retryOptions)
+            .setHeartbeatTimeout(Duration.ofSeconds(3))
             .build();
 
     private final OrderActivities orderActivities = Workflow
@@ -43,7 +53,8 @@ public class OrderWorkflowImpl implements OrderWorkflow {
         log.info("Verifying order distance");
         if (orderRequest.isDelivery() && distance > 25) {
             String message = "Customer lives outside the service area";
-            throw ApplicationFailure.newFailure(message, OutOfServiceAreaException.class.getName());
+            throw ApplicationFailure.newNonRetryableFailure(
+                    message, OutOfServiceAreaException.class.getName());
         }
 
         log.info("Preparing order {} for delivery", orderNumber);
